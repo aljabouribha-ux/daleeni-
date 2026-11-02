@@ -26,12 +26,12 @@ jobs:
 
       - name: Extract Project Files
         run: |
-          unzip -o daleeni_flutter_fixed.zip -d extracted_project || true
-          ls -la
+          unzip -q daleeni_flutter_fixed.zip -d extracted_source
+          ls -la extracted_source
 
       - name: Build APK
         run: |
-          cd daleeni_flutter_fixed || cd extracted_project/* || true
+          cd extracted_source/*
           flutter pub get
           flutter build apk --release
 
