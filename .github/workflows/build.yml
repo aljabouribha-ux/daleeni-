@@ -34,6 +34,11 @@ jobs:
           PROJECT_DIR=$(find . -name "pubspec.yaml" -maxdepth 2 -exec dirname {} \;)
           echo "Found project at: $PROJECT_DIR"
           cd "$PROJECT_DIR"
+          
+          if [ -f "android/gradle/wrapper/gradle-wrapper.properties" ]; then
+            sed -i 's/gradle-[0-9.]*-all.zip/gradle-8.4-all.zip/g' android/gradle/wrapper/gradle-wrapper.properties
+          fi
+
           flutter pub get
           flutter build apk --release
 
