@@ -35,11 +35,9 @@ jobs:
           echo "Found project at: $PROJECT_DIR"
           cd "$PROJECT_DIR"
           
-          # إذا كان مجلد android غير موجود أو ناقص، نقوم بتوليده نظيفاً وحديثاً
           if [ ! -d "android" ]; then
             flutter create . --platforms=android --org com.example
           else
-            # تحديث دعم الأندرويد إلى الإصدار الحديث في حال وجد مجلد قديم
             rm -rf android
             flutter create . --platforms=android --org com.example
           fi
