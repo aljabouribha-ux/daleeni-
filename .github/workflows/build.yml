@@ -35,7 +35,7 @@ jobs:
           echo "Found project at: $PROJECT_DIR"
           cd "$PROJECT_DIR"
           
-          # إنشاء مجلد الجريدل وضبط الإصدار المتوافق مباشرة
+          # ضبط إصدار الجريدل المتوافق
           mkdir -p android/gradle/wrapper
           echo "distributionBase=GRADLE_USER_HOME" > android/gradle/wrapper/gradle-wrapper.properties
           echo "distributionPath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
@@ -44,7 +44,7 @@ jobs:
           echo "zipStorePath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
 
           flutter pub get
-          flutter build apk --release
+          flutter build apk --release --no-pub
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
