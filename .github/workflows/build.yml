@@ -35,11 +35,13 @@ jobs:
           echo "Found project at: $PROJECT_DIR"
           cd "$PROJECT_DIR"
           
-          FIND_FILE=$(find . -name "gradle-wrapper.properties" | head -n 1)
-          if [ -n "$FIND_FILE" ]; then
-            echo "Updating gradle wrapper in $FIND_FILE"
-            echo "distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-all.zip" > "$FIND_FILE"
-          fi
+          # إنشاء مجلد الجريدل وضبط الإصدار المتوافق مباشرة
+          mkdir -p android/gradle/wrapper
+          echo "distributionBase=GRADLE_USER_HOME" > android/gradle/wrapper/gradle-wrapper.properties
+          echo "distributionPath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
+          echo "distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-all.zip" >> android/gradle/wrapper/gradle-wrapper.properties
+          echo "zipStoreBase=GRADLE_USER_HOME" >> android/gradle/wrapper/gradle-wrapper.properties
+          echo "zipStorePath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
 
           flutter pub get
           flutter build apk --release
