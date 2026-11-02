@@ -1,0 +1,42 @@
+name: Build Flutter APK
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.x'
+          channel: 'stable'
+
+      - name: Extract Project Files
+        run: |
+          unzip -o daleeni_flutter_fixed.zip -d extracted_project || true
+          ls -la
+
+      - name: Build APK
+        run: |
+          cd daleeni_flutter_fixed || cd extracted_project/* || true
+          flutter pub get
+          flutter build apk --release
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release
+          path: '**/outputs/apk/release/*.apk'
