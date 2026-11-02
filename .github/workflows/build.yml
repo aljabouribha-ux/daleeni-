@@ -35,7 +35,13 @@ jobs:
           echo "Found project at: $PROJECT_DIR"
           cd "$PROJECT_DIR"
           
-          # ضبط إعدادات الجريدل
+          # إنشاء الحد الأدنى من ملفات الأندرويد المفقودة لتجاوز خطأ v1 embedding
+          mkdir -p android/app/src/main
+          if [ ! -f "android/app/src/main/AndroidManifest.xml" ]; then
+            echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.daleeni"><application android:label="daleeni" android:name="${applicationName}" android:icon="@mipmap/ic_launcher"><activity android:name=".MainActivity" android:exported="true" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity></application></manifest>' > android/app/src/main/AndroidManifest.xml
+          fi
+
+          # ضبط إعدادات الجريدل المتوافقة
           mkdir -p android/gradle/wrapper
           echo "distributionBase=GRADLE_USER_HOME" > android/gradle/wrapper/gradle-wrapper.properties
           echo "distributionPath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
@@ -43,7 +49,6 @@ jobs:
           echo "zipStoreBase=GRADLE_USER_HOME" >> android/gradle/wrapper/gradle-wrapper.properties
           echo "zipStorePath=wrapper/dists" >> android/gradle/wrapper/gradle-wrapper.properties
 
-          # إنشاء ملف local.properties لتجنب أخطاء المسارات
           echo "flutter.sdk=$FLUTTER_ROOT" > local.properties
 
           flutter pub get
