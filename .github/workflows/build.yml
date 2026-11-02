@@ -35,8 +35,10 @@ jobs:
           echo "Found project at: $PROJECT_DIR"
           cd "$PROJECT_DIR"
           
-          if [ -f "android/gradle/wrapper/gradle-wrapper.properties" ]; then
-            sed -i 's/gradle-[0-9.]*-all.zip/gradle-8.4-all.zip/g' android/gradle/wrapper/gradle-wrapper.properties
+          FIND_FILE=$(find . -name "gradle-wrapper.properties" | head -n 1)
+          if [ -n "$FIND_FILE" ]; then
+            echo "Updating gradle wrapper in $FIND_FILE"
+            echo "distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-all.zip" > "$FIND_FILE"
           fi
 
           flutter pub get
