@@ -26,12 +26,15 @@ jobs:
 
       - name: Extract Project Files
         run: |
-          unzip -q daleeni_flutter_fixed.zip -d extracted_source
-          ls -la extracted_source
+          unzip -o daleeni_flutter_fixed.zip -d .
+          ls -la
 
-      - name: Build APK
+      - name: Find Project Directory and Build APK
         run: |
-          cd extracted_source/*
+          # البحث التلقائي عن المجلد الذي يحتوي على ملف pubspec.yaml وبناء التطبيق منه
+          PROJECT_DIR=$(find . -name "pubspec.yaml" -maxdepth 2 -exec dirname {} \;)
+          echo "Found project at: $PROJECT_DIR"
+          cd "$PROJECT_DIR"
           flutter pub get
           flutter build apk --release
 
